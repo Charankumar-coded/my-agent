@@ -141,7 +141,7 @@ h1{
 .htag-b{background:rgba(0,191,255,0.08);border-color:rgba(0,191,255,0.2);color:var(--accent2)}
 .htag-y{background:rgba(255,209,102,0.08);border-color:rgba(255,209,102,0.2);color:var(--warn)}
 
-/* ── API Key Setup ── */
+/* ── Demo Mode Card ── */
 .api-card{
   background:var(--surface);
   border:1px solid rgba(0,255,170,0.15);
@@ -445,7 +445,7 @@ textarea.task-input::placeholder{color:var(--muted);font-style:italic}
     <div class="nav-logo">⚡ AgentAI</div>
     <div class="nav-badge">
       <div class="live-dot"></div>
-      Live · Powered by Claude
+      Demo · No API key required
     </div>
   </nav>
 
@@ -455,7 +455,7 @@ textarea.task-input::placeholder{color:var(--muted);font-style:italic}
     <h1>AI Agent<br/><span class="grad">Think · Plan · Deliver</span></h1>
     <p class="hero-sub">
       Give any task to your AI agent. It analyzes, strategizes, and delivers
-      real results — powered by Claude's advanced reasoning.
+      practical results in a normal demo workflow without needing a secret key.
     </p>
     <div class="hero-tags">
       <span class="htag htag-g">AI Agents</span>
@@ -480,25 +480,19 @@ textarea.task-input::placeholder{color:var(--muted);font-style:italic}
     </div>
   </div>
 
-  <!-- API Key Card -->
+  <!-- Demo Mode Card -->
   <div class="api-card">
     <div class="api-card-header">
-      <div class="api-icon">🔑</div>
+      <div class="api-icon">🧪</div>
       <div>
-        <div class="api-title">Anthropic API Key</div>
-        <div class="api-subtitle">Required to run the agent · Stored in browser only</div>
+        <div class="api-title">Normal Demo Mode</div>
+        <div class="api-subtitle">No secret key required · Works instantly in the browser</div>
       </div>
     </div>
-    <div class="api-row">
-      <input type="password" class="api-input" id="apiKeyInput"
-        placeholder="sk-ant-api03-xxxxxxxxxxxxxxxxxxxx"/>
-      <button class="api-save-btn" onclick="saveKey()">Save Key</button>
-    </div>
     <div class="api-hint">
-      Get your key at <a href="https://console.anthropic.com/keys" target="_blank">console.anthropic.com/keys</a>
-      · Key is saved to localStorage and never sent anywhere except Anthropic's API.
+      This version uses built-in demo responses so you can try the agent workflow immediately.
+      For live AI responses, connect your own backend or API provider later.
     </div>
-    <div class="api-status" id="apiStatus" style="display:none"></div>
   </div>
 
   <!-- Agent Card -->
@@ -620,7 +614,7 @@ textarea.task-input::placeholder{color:var(--muted);font-style:italic}
           <span class="ftag ft2"><span class="tdot"></span>Prompt Engineering</span>
           <span class="ftag ft3"><span class="tdot"></span>Python</span>
         </div>
-        <span class="version">v2.0 · Claude Sonnet</span>
+        <span class="version"> · All Rights Reserved</span>
       </div>
 
     </div>
@@ -629,39 +623,6 @@ textarea.task-input::placeholder{color:var(--muted);font-style:italic}
 </div><!-- /wrapper -->
 
 <script>
-// ── Key management ──
-const KEY_NAME = 'anthropic_api_key';
-
-function saveKey() {
-  const val = document.getElementById('apiKeyInput').value.trim();
-  if (!val.startsWith('sk-ant')) {
-    showApiStatus('Invalid key format. Must start with sk-ant', false);
-    return;
-  }
-  localStorage.setItem(KEY_NAME, val);
-  showApiStatus('✓ API key saved successfully', true);
-}
-
-function getKey() {
-  return localStorage.getItem(KEY_NAME) || '';
-}
-
-function showApiStatus(msg, ok) {
-  const el = document.getElementById('apiStatus');
-  el.style.display = 'flex';
-  el.className = 'api-status ' + (ok ? 'ok' : 'err');
-  el.textContent = msg;
-}
-
-// Load saved key on startup
-window.addEventListener('DOMContentLoaded', () => {
-  const saved = getKey();
-  if (saved) {
-    document.getElementById('apiKeyInput').value = saved;
-    showApiStatus('✓ API key loaded from storage', true);
-  }
-});
-
 // ── Quick prompts ──
 function setQ(text) {
   document.getElementById('taskInput').value = text;
@@ -720,43 +681,29 @@ function typeInto(elId, text, speed = 5) {
   });
 }
 
-// ── Claude API call ──
-async function callClaude(apiKey, system, userMsg) {
-  const res = await fetch('https://api.anthropic.com/v1/messages', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'x-api-key': apiKey,
-      'anthropic-version': '2023-06-01',
-      'anthropic-dangerous-direct-browser-access': 'true'
-    },
-    body: JSON.stringify({
-      model: 'claude-sonnet-4-20250514',
-      max_tokens: 1000,
-      system: system,
-      messages: [{ role: 'user', content: userMsg }]
-    })
-  });
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
-    throw new Error(err.error?.message || `HTTP ${res.status}`);
+function buildDemoResponse(phase, task, analysis = '', plan = '', execution = '') {
+  const normalizedTask = task.toLowerCase();
+  const topic = normalizedTask.includes('api') ? 'API' : normalizedTask.includes('marketing') ? 'marketing' : normalizedTask.includes('react') ? 'UI' : normalizedTask.includes('python') ? 'Python' : normalizedTask.includes('ml') || normalizedTask.includes('machine learning') ? 'machine learning' : 'product';
+
+  switch (phase) {
+    case 'think':
+      return `The request centers on ${topic} work with a clear goal, manageable constraints, and a need for practical delivery. The strongest approach is to break the task into a few high-value milestones so the result stays well structured and easy to execute.`;
+    case 'plan':
+      return `1. Clarify the main objective and the outcome you want to achieve.\n2. Identify the key components, dependencies, and delivery format.\n3. Build the first working version before refining edge cases.\n4. Add validation steps so the result is robust and easy to extend.`;
+    case 'execute':
+      return `Execution should start with the foundation, then move into testing and refinement. The biggest risks are scope creep and missing assumptions, so the plan should stay lightweight while still covering the most important use cases.`;
+    case 'deliver':
+      return `A strong deliverable for this task would be a concise implementation outline with clear steps, practical examples, and a short checklist for validation. The final result should be immediately usable and easy to adapt for future work.`;
+    default:
+      return `This is a normal demo response for: ${task}`;
   }
-  const data = await res.json();
-  return data.content.map(b => b.text || '').join('');
 }
 
 // ── Main agent run ──
 async function runAgent() {
   const task = document.getElementById('taskInput').value.trim();
-  const apiKey = getKey();
 
   // Validations
-  if (!apiKey) {
-    document.getElementById('errorBox').textContent = '⚠️ Please enter and save your Anthropic API key above first.';
-    document.getElementById('errorBox').style.display = 'block';
-    document.getElementById('apiKeyInput').focus();
-    return;
-  }
   if (!task) {
     document.getElementById('taskInput').focus();
     return;
@@ -794,12 +741,7 @@ async function runAgent() {
     showPanel('panelThink');
     setLoading('think', true);
 
-    thinkResult = await callClaude(apiKey,
-      `You are the THINK phase of an advanced AI agent. Your job is to deeply analyze the user's task.
-       Cover: what exactly is being asked, the core challenges, hidden complexity, constraints, edge cases, and what success truly looks like.
-       Write in clear flowing prose. Be insightful and thorough but concise. Max 140 words.`,
-      `Task: ${task}`
-    );
+    thinkResult = buildDemoResponse('think', task);
 
     setLoading('think', false);
     await typeInto('thinkBody', thinkResult, 6);
@@ -810,12 +752,7 @@ async function runAgent() {
     showPanel('panelPlan');
     setLoading('plan', true);
 
-    planResult = await callClaude(apiKey,
-      `You are the PLAN phase of an advanced AI agent. Based on the task and analysis, create a clear, numbered, actionable step-by-step plan.
-       Each step should be specific, concrete, and executable.
-       Format: numbered list (1. 2. 3. ...). Max 160 words. Focus on execution order, dependencies, and key decisions.`,
-      `Original Task: ${task}\n\nThink Analysis: ${thinkResult}`
-    );
+    planResult = buildDemoResponse('plan', task, thinkResult);
 
     setLoading('plan', false);
     await typeInto('planBody', planResult, 6);
@@ -826,12 +763,7 @@ async function runAgent() {
     showPanel('panelExecute');
     setLoading('execute', true);
 
-    executeResult = await callClaude(apiKey,
-      `You are the EXECUTE phase of an advanced AI agent. Based on the plan, simulate the execution — identify potential problems, optimizations, and implementation details.
-       Discuss what happens when each step is carried out, what decisions were made, and how to handle obstacles.
-       Max 180 words. Be specific and technical where needed.`,
-      `Original Task: ${task}\n\nAnalysis: ${thinkResult}\n\nPlan: ${planResult}`
-    );
+    executeResult = buildDemoResponse('execute', task, thinkResult, planResult);
 
     setLoading('execute', false);
     await typeInto('executeBody', executeResult, 6);
@@ -842,12 +774,7 @@ async function runAgent() {
     showPanel('panelDeliver');
     setLoading('deliver', true);
 
-    deliverResult = await callClaude(apiKey,
-      `You are the DELIVER phase of an advanced AI agent. Produce the final, complete deliverable for the user's task.
-       This is the actual output — working code, a detailed strategy document, a complete plan, or whatever the task calls for.
-       Make it production-ready, thorough, and immediately usable. Max 400 words. This is what the user needs to succeed.`,
-      `Original Task: ${task}\n\nAnalysis: ${thinkResult}\n\nPlan: ${planResult}\n\nExecution Notes: ${executeResult}`
-    );
+    deliverResult = buildDemoResponse('deliver', task, thinkResult, planResult, executeResult);
 
     setLoading('deliver', false);
     await typeInto('deliverBody', deliverResult, 4);
