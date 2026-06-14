@@ -459,8 +459,8 @@ textarea.task-input::placeholder{color:var(--muted);font-style:italic}
     </p>
     <div class="hero-tags">
       <span class="htag htag-g">AI Agents</span>
-      <span class="htag htag-b">Prompt Engineering</span>
-      <span class="htag htag-y">Python</span>
+      <span class="htag htag-b">Strategic Planning</span>
+      <span class="htag htag-y">Python & APIs</span>
     </div>
   </div>
 
@@ -528,12 +528,12 @@ textarea.task-input::placeholder{color:var(--muted);font-style:italic}
 
       <!-- Quick Prompts -->
       <div class="quick-wrap">
-        <button class="qbtn" onclick="setQ('Build a complete REST API for a todo app in Python using FastAPI and SQLite')">🐍 Python REST API</button>
-        <button class="qbtn" onclick="setQ('Create a full marketing strategy for a B2B SaaS product targeting startups')">📈 SaaS Strategy</button>
-        <button class="qbtn" onclick="setQ('Design a machine learning pipeline for real-time image classification using PyTorch')">🤖 ML Pipeline</button>
-        <button class="qbtn" onclick="setQ('Write a production-ready web scraper that collects job listings from multiple sites')">🔍 Web Scraper</button>
-        <button class="qbtn" onclick="setQ('Build a React dashboard with charts showing real-time analytics data')">📊 React Dashboard</button>
-        <button class="qbtn" onclick="setQ('Create a complete DevOps CI/CD pipeline using GitHub Actions and Docker')">🚀 CI/CD Pipeline</button>
+        <button class="qbtn" onclick="setQ('Build a production-grade REST API with FastAPI, async SQLAlchemy, JWT auth, and comprehensive error handling for a SaaS platform')">🐍 FastAPI SaaS</button>
+        <button class="qbtn" onclick="setQ('Design and implement a real-time data pipeline using Python, pandas, and message queues for processing 1M+ events daily')">📡 Data Pipeline</button>
+        <button class="qbtn" onclick="setQ('Create a machine learning deployment strategy with model versioning, A/B testing, and monitoring using MLflow and Docker')">🤖 ML DevOps</button>
+        <button class="qbtn" onclick="setQ('Develop a Python-based web scraper with respectful rate limiting, error recovery, and database persistence for market research')">🔍 Web Scraper</button>
+        <button class="qbtn" onclick="setQ('Build a microservices architecture with FastAPI, Celery for async tasks, and PostgreSQL for a scalable e-commerce backend')">🏗️ Microservices</button>
+        <button class="qbtn" onclick="setQ('Design an automated testing framework with pytest, coverage reporting, and CI/CD integration for Python applications')">✅ Test Automation</button>
       </div>
 
       <!-- Error -->
@@ -610,11 +610,11 @@ textarea.task-input::placeholder{color:var(--muted);font-style:italic}
       <!-- Footer -->
       <div class="footer-tags">
         <div style="display:flex;gap:8px;flex-wrap:wrap">
-          <span class="ftag ft1"><span class="tdot"></span>AI Agents</span>
-          <span class="ftag ft2"><span class="tdot"></span>Prompt Engineering</span>
-          <span class="ftag ft3"><span class="tdot"></span>Python</span>
+          <span class="ftag ft1"><span class="tdot"></span>Strategic AI</span>
+          <span class="ftag ft2"><span class="tdot"></span>Task Analysis</span>
+          <span class="ftag ft3"><span class="tdot"></span>Python-Native</span>
         </div>
-        <span class="version"> · All Rights Reserved</span>
+        <span class="version">Professional Agent Platform · v2.0</span>
       </div>
 
     </div>
@@ -658,6 +658,17 @@ function setLoading(prefix, on) {
   document.getElementById(prefix + 'Badge').style.display = on ? 'none' : 'block';
 }
 
+function updateBadgeStatus(prefix, status) {
+  const badge = document.getElementById(prefix + 'Badge');
+  const statusText = {
+    'think': '🔍 Analysis',
+    'plan': '📋 Strategy',
+    'execute': '⚙️ Process',
+    'deliver': '📦 Complete'
+  };
+  badge.textContent = statusText[prefix] || status;
+}
+
 function typeInto(elId, text, speed = 5) {
   return new Promise(resolve => {
     const el = document.getElementById(elId);
@@ -683,19 +694,235 @@ function typeInto(elId, text, speed = 5) {
 
 function buildDemoResponse(phase, task, analysis = '', plan = '', execution = '') {
   const normalizedTask = task.toLowerCase();
-  const topic = normalizedTask.includes('api') ? 'API' : normalizedTask.includes('marketing') ? 'marketing' : normalizedTask.includes('react') ? 'UI' : normalizedTask.includes('python') ? 'Python' : normalizedTask.includes('ml') || normalizedTask.includes('machine learning') ? 'machine learning' : 'product';
-
+  
+  // Detect task categories
+  const isAPI = normalizedTask.includes('api') || normalizedTask.includes('fastapi') || normalizedTask.includes('rest');
+  const isPython = normalizedTask.includes('python') || normalizedTask.includes('fastapi') || normalizedTask.includes('celery') || normalizedTask.includes('pytest');
+  const isML = normalizedTask.includes('ml') || normalizedTask.includes('machine learning') || normalizedTask.includes('pytorch') || normalizedTask.includes('mlflow');
+  const isPipeline = normalizedTask.includes('pipeline') || normalizedTask.includes('etl') || normalizedTask.includes('data');
+  const isMicroservices = normalizedTask.includes('microservice') || normalizedTask.includes('scale');
+  const isTesting = normalizedTask.includes('test') || normalizedTask.includes('pytest');
+  
+  // Professional response templates
   switch (phase) {
     case 'think':
-      return `The request centers on ${topic} work with a clear goal, manageable constraints, and a need for practical delivery. The strongest approach is to break the task into a few high-value milestones so the result stays well structured and easy to execute.`;
+      if (isAPI) {
+        return `Analysis: This API development task requires careful consideration of scalability, security, and maintainability. Key factors: request throughput (estimated QPS), authentication mechanisms (JWT/OAuth2), data consistency requirements, and error handling strategies. The task demands a modular architecture with proper separation of concerns, input validation, and comprehensive logging for production monitoring.`;
+      } else if (isML) {
+        return `Analysis: ML deployment involves multiple layers—model training, versioning, serving, and monitoring. Critical factors: model performance metrics (accuracy, latency, throughput), feature consistency between training and production, data drift detection, and rollback strategies. The approach must balance model accuracy with inference speed and cost efficiency.`;
+      } else if (isPipeline) {
+        return `Analysis: Data pipeline architecture depends on volume (events/sec), latency requirements (real-time vs batch), and data quality needs. Key considerations: fault tolerance, exactly-once semantics, backpressure handling, and schema evolution. Modern pipelines use streaming frameworks and event-driven architectures for resilience.`;
+      } else if (isMicroservices) {
+        return `Analysis: Microservices architecture introduces distributed system challenges—service discovery, inter-service communication, transaction handling, and deployment complexity. Success requires: clear service boundaries, API versioning strategies, circuit breakers, and comprehensive observability for debugging production issues.`;
+      } else if (isTesting) {
+        return `Analysis: Effective testing strategy balances coverage with maintainability. Modern testing includes: unit tests for isolation, integration tests for contracts, end-to-end tests for workflows, and performance benchmarks. Key metrics: code coverage, test execution time, and failure signal accuracy to prevent flaky tests.`;
+      } else {
+        return `Analysis: This task requires systematic breakdown into logical components with clear dependencies and success criteria. Assessment factors include: scope complexity, technical constraints, resource availability, and risk mitigation strategies. A phased approach ensures early validation and adaptive refinement.`;
+      }
+      
     case 'plan':
-      return `1. Clarify the main objective and the outcome you want to achieve.\n2. Identify the key components, dependencies, and delivery format.\n3. Build the first working version before refining edge cases.\n4. Add validation steps so the result is robust and easy to extend.`;
+      if (isAPI) {
+        return `Strategy:
+1. Define API contract (OpenAPI/Swagger spec) with request/response schemas
+2. Implement core endpoints with FastAPI, Pydantic models for validation
+3. Add authentication layer (JWT tokens with refresh mechanisms)
+4. Configure database models (SQLAlchemy ORM) with connection pooling
+5. Implement middleware for logging, error handling, and rate limiting
+6. Write integration tests using pytest with test fixtures
+7. Deploy with ASGI server (Uvicorn) behind reverse proxy (Nginx)
+8. Configure monitoring (structured logging, metrics, health checks)`;
+      } else if (isML) {
+        return `Strategy:
+1. Establish ML experiment tracking (MLflow) with versioning
+2. Develop feature engineering pipeline with data validation
+3. Train model with hyperparameter optimization and cross-validation
+4. Create model registry with performance benchmarks
+5. Containerize model serving (FastAPI + Docker)
+6. Implement prediction caching and batch processing
+7. Set up monitoring for data drift and model performance degradation
+8. Build A/B testing framework for gradual rollout`;
+      } else if (isPipeline) {
+        return `Strategy:
+1. Design event schema with backward compatibility
+2. Choose streaming platform (Kafka/RabbitMQ) with replication
+3. Implement source connectors with error recovery
+4. Build transformation logic with unit test coverage
+5. Configure sinks (databases, data lakes) with error handling
+6. Implement checkpoint/state management for recovery
+7. Add monitoring for lag, throughput, and data quality
+8. Document data lineage for compliance tracking`;
+      } else if (isMicroservices) {
+        return `Strategy:
+1. Define service boundaries and data ownership models
+2. Implement API gateway for routing and authentication
+3. Use message queues (RabbitMQ/Kafka) for async communication
+4. Deploy with Docker and orchestrate via Kubernetes
+5. Implement service discovery and load balancing
+6. Add circuit breakers and retry logic for resilience
+7. Configure distributed tracing for end-to-end visibility
+8. Setup auto-scaling policies based on metrics`;
+      } else if (isTesting) {
+        return `Strategy:
+1. Organize tests by layer: unit, integration, end-to-end
+2. Create shared fixtures and mocks for test data
+3. Implement parameterized tests for multiple scenarios
+4. Setup continuous integration with automated test runs
+5. Generate coverage reports and track trends
+6. Add performance benchmarks and regression tests
+7. Configure code quality gates (coverage thresholds)
+8. Document test cases and acceptance criteria`;
+      } else {
+        return `Strategy:
+1. Define clear success criteria and acceptance tests
+2. Break project into 2-3 week sprints with deliverables
+3. Identify critical path and potential bottlenecks
+4. Allocate resources and establish communication protocols
+5. Build prototypes for high-risk components early
+6. Integrate incrementally with continuous testing
+7. Document decisions and rationale for future reference
+8. Plan rollback strategies for production deployment`;
+      }
+      
     case 'execute':
-      return `Execution should start with the foundation, then move into testing and refinement. The biggest risks are scope creep and missing assumptions, so the plan should stay lightweight while still covering the most important use cases.`;
+      if (isAPI) {
+        return `Execution approach:
+✓ Setup project structure with /app, /tests, /docs directories
+✓ Create virtual environment with requirements.txt (FastAPI, SQLAlchemy, Pydantic)
+✓ Implement database models and migrations using Alembic
+✓ Build core endpoints with comprehensive input validation
+✓ Add authentication middleware with proper secret management
+✓ Create unit tests achieving 85%+ code coverage
+✓ Configure structured logging (JSON format for log aggregation)
+✓ Setup Docker image with multi-stage builds for optimization
+✓ Enable CORS, rate limiting, and request ID tracking
+✓ Document API endpoints with OpenAPI auto-generation`;
+      } else if (isML) {
+        return `Execution approach:
+✓ Setup ML project with DVC for data versioning
+✓ Create reproducible training pipeline with seed management
+✓ Implement feature engineering with data quality checks
+✓ Train baseline model and optimize hyperparameters
+✓ Evaluate using stratified cross-validation
+✓ Create model container with FastAPI inference endpoint
+✓ Implement batch prediction for large datasets
+✓ Add model performance monitoring and alerting
+✓ Version models in registry with metadata
+✓ Document model assumptions and limitations`;
+      } else if (isPipeline) {
+        return `Execution approach:
+✓ Setup event schema registry (Avro/Protobuf)
+✓ Implement source connectors with retry logic
+✓ Create transformation logic with state management
+✓ Configure sink connectors with error handling
+✓ Implement exactly-once processing semantics
+✓ Add data quality validation (schema, value checks)
+✓ Setup monitoring dashboards (latency, throughput, errors)
+✓ Create disaster recovery and rollback procedures
+✓ Document data contracts and SLAs
+✓ Build alerting for anomalies and failures`;
+      } else if (isMicroservices) {
+        return `Execution approach:
+✓ Create service templates with standardized structure
+✓ Implement API gateway (Kong/Nginx) for routing
+✓ Setup Kubernetes manifests with resource limits
+✓ Configure message queue infrastructure
+✓ Implement inter-service authentication
+✓ Add circuit breakers and health checks
+✓ Deploy distributed tracing (Jaeger/Datadog)
+✓ Setup service mesh for advanced networking (Istio)
+✓ Create service registry and discovery
+✓ Implement secrets management (Vault)`;
+      } else if (isTesting) {
+        return `Execution approach:
+✓ Create test base classes and shared fixtures
+✓ Implement factory patterns for test data generation
+✓ Write unit tests with mocking external dependencies
+✓ Create integration tests with test containers
+✓ Setup end-to-end tests with real API calls
+✓ Configure CI/CD pipeline for automated test execution
+✓ Add coverage tracking with report generation
+✓ Implement performance benchmarks and profiling
+✓ Create test documentation and runbooks
+✓ Setup test result dashboards and trends`;
+      } else {
+        return `Execution approach:
+✓ Create project structure with clear module boundaries
+✓ Implement core functionality with test-driven development
+✓ Add configuration management for different environments
+✓ Integrate with version control and CI/CD
+✓ Setup logging and monitoring infrastructure
+✓ Perform code reviews and maintain quality standards
+✓ Create documentation for setup and operation
+✓ Plan and execute incremental releases
+✓ Collect metrics on performance and reliability
+✓ Establish feedback loops with stakeholders`;
+      }
+      
     case 'deliver':
-      return `A strong deliverable for this task would be a concise implementation outline with clear steps, practical examples, and a short checklist for validation. The final result should be immediately usable and easy to adapt for future work.`;
+      if (isAPI) {
+        return `Deliverables:
+📦 Production-ready API with full documentation (OpenAPI spec)
+📊 Performance metrics (p95 latency <100ms, 99% uptime SLA)
+🔒 Security audit results (authentication, authorization verified)
+📈 Load testing results showing capacity (10k+ req/sec)
+🧪 Test suite with 85%+ coverage and CI/CD integration
+📚 Deployment guide with infrastructure-as-code (Terraform/CloudFormation)
+🔔 Monitoring setup with dashboards and alerting
+✅ Runbook for common troubleshooting scenarios`;
+      } else if (isML) {
+        return `Deliverables:
+📦 Trained model with metrics (accuracy, precision, recall, F1)
+📊 Model explainability report (feature importance, SHAP values)
+🚀 Containerized inference service with REST API
+⚡ Performance report (latency, throughput, resource usage)
+📈 Monitoring dashboard tracking model health
+🔄 A/B testing framework for gradual rollout
+📚 Model card documenting assumptions and limitations
+✅ Automated retraining pipeline for production maintenance`;
+      } else if (isPipeline) {
+        return `Deliverables:
+📦 End-to-end pipeline handling target throughput
+📊 Data quality metrics and validation rules
+🔄 Exactly-once semantics verification
+⚡ Performance benchmarks (latency, throughput, resource usage)
+🔔 Monitoring dashboards and alerts
+📈 Scalability testing results with capacity planning
+📚 Data lineage documentation and compliance reports
+✅ Disaster recovery runbook and RTO/RPO targets`;
+      } else if (isMicroservices) {
+        return `Deliverables:
+📦 Deployable microservices with API documentation
+📊 Service dependency diagram and communication patterns
+🔐 Authentication and authorization implementation
+⚡ Performance metrics under expected load
+📈 Scalability testing results and auto-scaling policies
+🔔 Observability setup (tracing, metrics, logs)
+📚 Operational runbook and troubleshooting guide
+✅ Disaster recovery plan with failover procedures`;
+      } else if (isTesting) {
+        return `Deliverables:
+📦 Comprehensive test suite (unit, integration, E2E)
+📊 Code coverage report (target: 80%+ coverage)
+🔄 Automated CI/CD pipeline for continuous testing
+⚡ Test performance metrics and execution time
+📈 Trend analysis showing test suite health
+🔔 Alerts for coverage decreases or flaky tests
+📚 Test documentation and maintenance procedures
+✅ Dashboard showing test results and quality metrics`;
+      } else {
+        return `Deliverables:
+📦 Complete implementation with source code
+📊 Performance metrics and success criteria validation
+✅ Comprehensive documentation and user guide
+🚀 Deployment package with setup instructions
+📈 Monitoring and observability setup
+🔔 Alerting configured for critical issues
+📚 Maintenance procedures and support runbook
+💡 Recommendations for future enhancements`;
+      }
+      
     default:
-      return `This is a normal demo response for: ${task}`;
+      return `Professional demo response for: ${task}`;
   }
 }
 
@@ -705,7 +932,15 @@ async function runAgent() {
 
   // Validations
   if (!task) {
+    document.getElementById('errorBox').textContent = '⚠️ Please enter a task to begin. Example: "Build a FastAPI REST API with authentication"';
+    document.getElementById('errorBox').style.display = 'block';
     document.getElementById('taskInput').focus();
+    return;
+  }
+
+  if (task.length < 10) {
+    document.getElementById('errorBox').textContent = '⚠️ Task description is too brief. Please provide more details for better analysis.';
+    document.getElementById('errorBox').style.display = 'block';
     return;
   }
 
@@ -737,52 +972,61 @@ async function runAgent() {
     // ════ PHASE 1: THINK ════
     setStep(1);
     btnIcon.innerHTML = '<div class="spin"></div>';
-    btnText.textContent = 'Thinking...';
+    btnText.textContent = 'Analyzing...';
     showPanel('panelThink');
     setLoading('think', true);
 
+    // Simulate brief delay for processing
+    await new Promise(resolve => setTimeout(resolve, 500));
     thinkResult = buildDemoResponse('think', task);
-
     setLoading('think', false);
-    await typeInto('thinkBody', thinkResult, 6);
+    updateBadgeStatus('think', 'Complete');
+    await typeInto('thinkBody', thinkResult, 5);
 
     // ════ PHASE 2: PLAN ════
+    await new Promise(resolve => setTimeout(resolve, 300));
     setStep(2);
     btnText.textContent = 'Planning...';
     showPanel('panelPlan');
     setLoading('plan', true);
 
+    await new Promise(resolve => setTimeout(resolve, 500));
     planResult = buildDemoResponse('plan', task, thinkResult);
-
     setLoading('plan', false);
-    await typeInto('planBody', planResult, 6);
+    updateBadgeStatus('plan', 'Complete');
+    await typeInto('planBody', planResult, 4);
 
     // ════ PHASE 3: EXECUTE ════
+    await new Promise(resolve => setTimeout(resolve, 300));
     setStep(3);
     btnText.textContent = 'Executing...';
     showPanel('panelExecute');
     setLoading('execute', true);
 
+    await new Promise(resolve => setTimeout(resolve, 500));
     executeResult = buildDemoResponse('execute', task, thinkResult, planResult);
-
     setLoading('execute', false);
-    await typeInto('executeBody', executeResult, 6);
+    updateBadgeStatus('execute', 'Complete');
+    await typeInto('executeBody', executeResult, 4);
 
     // ════ PHASE 4: DELIVER ════
+    await new Promise(resolve => setTimeout(resolve, 300));
     setStep(4);
     btnText.textContent = 'Delivering...';
     showPanel('panelDeliver');
     setLoading('deliver', true);
 
+    await new Promise(resolve => setTimeout(resolve, 500));
     deliverResult = buildDemoResponse('deliver', task, thinkResult, planResult, executeResult);
-
     setLoading('deliver', false);
-    await typeInto('deliverBody', deliverResult, 4);
+    updateBadgeStatus('deliver', 'Complete');
+    await typeInto('deliverBody', deliverResult, 3);
 
     // ════ ALL DONE ════
+    await new Promise(resolve => setTimeout(resolve, 300));
     setStep(99);
     btnIcon.textContent = '✅';
-    btnText.textContent = 'Done! Run Again';
+    btnText.textContent = 'Complete! Run Again';
     document.getElementById('successBar').style.display = 'flex';
     document.getElementById('successBar').scrollIntoView({ behavior:'smooth', block:'nearest' });
 
@@ -790,7 +1034,7 @@ async function runAgent() {
     setStep(0);
     btnIcon.textContent = '⚡';
     btnText.textContent = 'Run Agent';
-    document.getElementById('errorBox').textContent = '⚠️ Error: ' + err.message;
+    document.getElementById('errorBox').textContent = '⚠️ Error: ' + (err.message || 'Unknown error occurred');
     document.getElementById('errorBox').style.display = 'block';
     // Hide loading spinners on error
     ['thinkLoading','planLoading','executeLoading','deliverLoading'].forEach(id => {
